@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:learn_hive/note_description_screen.dart';
 
 class NoteScreen extends StatelessWidget {
   const NoteScreen({super.key});
@@ -33,7 +36,13 @@ class NoteScreen extends StatelessWidget {
         itemCount: 8,
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.to(NoteDescriptionScreen(),
+              arguments: {
+                'title': 'Note ${index + 1}',
+                'description': 'Detailed description of note ${index + 1}.',
+              });
+            },
             borderRadius: BorderRadius.circular(20),
             child: Container(
               decoration: BoxDecoration(
