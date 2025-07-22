@@ -6,7 +6,7 @@ import 'package:learn_hive/note_screen.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox('notesData');
+  // await Hive.openBox('notesData');
   runApp(const MyApp());
 
 }
