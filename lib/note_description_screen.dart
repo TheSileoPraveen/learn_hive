@@ -36,7 +36,7 @@ class NoteDescriptionScreen extends StatelessWidget {
             right: 20,
           ),
           child: Container(
-            height: 500,
+
             decoration: BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.circular(20),
@@ -46,6 +46,7 @@ class NoteDescriptionScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     '${Get.arguments['title']}',
