@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class NoteDescriptionScreen extends StatelessWidget {
   const NoteDescriptionScreen({super.key});
@@ -36,44 +37,76 @@ class NoteDescriptionScreen extends StatelessWidget {
             right: 20,
           ),
           child: Container(
-
             decoration: BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '${Get.arguments['title']}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${Get.arguments['title']}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    width: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                    SizedBox(height: 5),
+                    Container(
+                      width: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
 
-                    height: 2,
-                  ),
-                  SizedBox(height: 20),
-                  Flexible(
-                    child: Text(
-                      '${Get.arguments['description']}',
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      height: 2,
                     ),
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    Flexible(
+                      child: Text(
+                        '${Get.arguments['description']}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            "Created At :",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          DateFormat(
+                            'dd MMM, EEE, yyyy',
+                          ).format(DateTime.parse(Get.arguments['created_at'])),
+
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

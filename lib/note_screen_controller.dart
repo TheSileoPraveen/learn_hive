@@ -20,6 +20,8 @@ class NoteScreenController extends GetxController {
     await myBox.add(data);
     CustomSnackBar("Note Added Successfully", "S");
     getNoteListData();
+    titleController.clear();
+    descriptionController.clear();
   }
 
   getNoteListData() {
@@ -28,6 +30,7 @@ class NoteScreenController extends GetxController {
         "key": key,
         "title": myBox.get(key)["title"],
         "description": myBox.get(key)["description"],
+        "created_at": myBox.get(key)["created_at"],
       };
     }).toList();
   }
@@ -36,11 +39,15 @@ class NoteScreenController extends GetxController {
     await myBox.delete(key);
     CustomSnackBar("Note Deleted Successfully", "S");
     getNoteListData();
+    titleController.clear();
+    descriptionController.clear();
   }
 
   updateNote(int key, String title, String description) async {
     await myBox.put(key, {"title": title, "description": description});
     CustomSnackBar("Note Edited Successfully", "S");
     getNoteListData();
+    titleController.clear();
+    descriptionController.clear();
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:learn_hive/note_description_screen.dart';
 import 'package:learn_hive/note_screen_controller.dart';
+import 'package:intl/intl.dart';
 
 class NoteScreen extends StatelessWidget {
   NoteScreen({super.key});
@@ -44,9 +44,13 @@ class NoteScreen extends StatelessWidget {
                       Get.to(
                         NoteDescriptionScreen(),
                         arguments: {
-                          'title': '${noteScreenController.noteList[index]['title']}',
+                          'title':
+                              '${noteScreenController.noteList[index]['title']}',
                           'description':
                               '${noteScreenController.noteList[index]['description']}',
+                              "created_at":
+                              '${noteScreenController.noteList[index]['created_at']}',
+                          'key': noteScreenController.noteList[index]['key'],
                         },
                       );
                     },
@@ -78,6 +82,8 @@ class NoteScreen extends StatelessWidget {
                               child: Text(
                                 noteScreenController
                                     .noteList[index]['description'],
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -91,225 +97,13 @@ class NoteScreen extends StatelessWidget {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    noteScreenController.titleController.text =
-                                        noteScreenController
-                                            .noteList[index]['title'];
-                                    noteScreenController
-                                        .descriptionController
-                                        .text = noteScreenController
-                                        .noteList[index]['description'];
-                                    Get.bottomSheet(
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
-                                          ),
-                                        ),
-                                        child: SingleChildScrollView(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 30,
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 20,
-                                                      ),
-                                                  child: TextFormField(
-                                                    maxLines: 1,
-
-                                                    cursorColor: Colors.black,
-
-                                                    textInputAction:
-                                                        TextInputAction.done,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    controller:
-                                                        noteScreenController
-                                                            .titleController,
-                                                    decoration: InputDecoration(
-                                                      counterText: "",
-                                                      hintText: "Enter Title",
-                                                      filled: false,
-                                                      hintStyle:
-                                                          const TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                          ),
-                                                      fillColor: Colors.green,
-
-                                                      // Default border color (white)
-                                                      border: OutlineInputBorder(
-                                                        borderSide:
-                                                            const BorderSide(
-                                                              color:
-                                                                  Colors.green,
-                                                              width: 1.5,
-                                                            ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              12,
-                                                            ),
-                                                      ),
-
-                                                      // Border when the field is enabled (white)
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                  color: Colors
-                                                                      .green,
-                                                                  width: 1.5,
-                                                                ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  12,
-                                                                ),
-                                                          ),
-
-                                                      // Border when the field is focused (white)
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                  color: Colors
-                                                                      .green,
-                                                                  width: 1.5,
-                                                                ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  12,
-                                                                ),
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 30),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 20,
-                                                      ),
-                                                  child: TextFormField(
-                                                    maxLines: 3,
-
-                                                    cursorColor: Colors.black,
-                                                    controller:
-                                                        noteScreenController
-                                                            .descriptionController,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    keyboardType:
-                                                        TextInputType.text,
-
-                                                    decoration: InputDecoration(
-                                                      counterText: "",
-                                                      hintText:
-                                                          " Enter Decscription",
-                                                      filled: false,
-                                                      hintStyle:
-                                                          const TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                          ),
-                                                      fillColor: Colors.green,
-                                                      // Default border color (white)
-                                                      border: OutlineInputBorder(
-                                                        borderSide:
-                                                            const BorderSide(
-                                                              color:
-                                                                  Colors.green,
-                                                              width: 1.5,
-                                                            ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              12,
-                                                            ),
-                                                      ),
-
-                                                      // Border when the field is enabled (white)
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                  color: Colors
-                                                                      .green,
-                                                                  width: 1.5,
-                                                                ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  12,
-                                                                ),
-                                                          ),
-
-                                                      // Border when the field is focused (white)
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                  color: Colors
-                                                                      .green,
-                                                                  width: 1.5,
-                                                                ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  12,
-                                                                ),
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 40),
-                                                ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.green,
-                                                      ),
-                                                  onPressed: () {
-                                                    noteScreenController.updateNote(
-                                                      noteScreenController
-                                                          .noteList[index]['key'],
-                                                      noteScreenController
-                                                          .titleController
-                                                          .text,
-                                                      noteScreenController
-                                                          .descriptionController
-                                                          .text,
-                                                    );
-                                                    noteScreenController
-                                                        .titleController
-                                                        .clear();
-                                                    noteScreenController
-                                                        .descriptionController
-                                                        .clear();
-                                                    Get.back();
-                                                  },
-                                                  child: Text(
-                                                    "Update Note",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 40),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                    addNotes(
+                                      title: noteScreenController
+                                          .noteList[index]['title'],
+                                      description: noteScreenController
+                                          .noteList[index]['description'],
+                                      key: noteScreenController
+                                          .noteList[index]['key'],
                                     );
                                   },
                                   child: CircleAvatar(
@@ -423,6 +217,35 @@ class NoteScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Created At :",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  DateFormat('dd MMM, EEE, yyyy').format(
+                                    DateTime.parse(
+                                      noteScreenController
+                                          .noteList[index]['created_at'],
+                                    ),
+                                  ),
+                                
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -452,7 +275,14 @@ class NoteScreen extends StatelessWidget {
     );
   }
 
-  addNotes() {
+  addNotes({String title = "", String description = "", int key = 0}) {
+    if (title.isNotEmpty || description.isNotEmpty) {
+      noteScreenController.titleController.text = title;
+      noteScreenController.descriptionController.text = description;
+    } else {
+      noteScreenController.titleController.clear();
+      noteScreenController.descriptionController.clear();
+    }
     return Get.bottomSheet(
       Container(
         width: double.infinity,
@@ -574,18 +404,28 @@ class NoteScreen extends StatelessWidget {
                     backgroundColor: Colors.green,
                   ),
                   onPressed: () {
-                    noteScreenController.addData({
-                      'title': noteScreenController.titleController.text,
-                      'description':
-                          noteScreenController.descriptionController.text,
-                    });
-                    noteScreenController.titleController.clear();
-                    noteScreenController.descriptionController.clear();
+                    if (title.isNotEmpty || description.isNotEmpty) {
+                      noteScreenController.updateNote(
+                        key,
+                        noteScreenController.titleController.text,
+                        noteScreenController.descriptionController.text,
+                      );
+                    } else {
+                      noteScreenController.addData({
+                        'title': noteScreenController.titleController.text,
+                        'description':
+                            noteScreenController.descriptionController.text,
+                        "created_at": DateTime.now().toString(),
+                      });
+                    }
+
                     // Close the bottom sheet after adding the note
                     Get.back();
                   },
                   child: Text(
-                    'Save Note',
+                    (title.isNotEmpty || description.isNotEmpty)
+                        ? "Update Note"
+                        : 'Save Note',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
