@@ -15,12 +15,19 @@ class NoteScreen extends StatelessWidget {
           preferredSize: const Size.fromHeight(40),
           child: AppBar(
             elevation: 3,
-            title: const Text(
-              'Your Notes  📝',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+            title: InkWell(
+              onTap: () {
+                noteScreenController.noteList.clear();
+                noteScreenController.getNoteListData();
+                print("Note List: ${noteScreenController.noteList}");
+              },
+              child: const Text(
+                'Your Notes  📝',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             centerTitle: true,
@@ -234,7 +241,7 @@ class NoteScreen extends StatelessWidget {
                                   DateFormat('dd MMM, EEE, yyyy').format(
                                     DateTime.parse(
                                       noteScreenController
-                                          .noteList[index]['created_at'],
+                                          .noteList[index]['created_at']??"",
                                     ),
                                   ),
                                 
@@ -275,7 +282,7 @@ class NoteScreen extends StatelessWidget {
     );
   }
 
-  addNotes({String title = "", String description = "", int key = 0}) {
+  addNotes({String title = "", String description = "", int key = 0, String createdAt = ""}) {
     if (title.isNotEmpty || description.isNotEmpty) {
       noteScreenController.titleController.text = title;
       noteScreenController.descriptionController.text = description;
@@ -409,6 +416,7 @@ class NoteScreen extends StatelessWidget {
                         key,
                         noteScreenController.titleController.text,
                         noteScreenController.descriptionController.text,
+                        
                       );
                     } else {
                       noteScreenController.addData({
