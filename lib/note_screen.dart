@@ -111,6 +111,7 @@ class NoteScreen extends StatelessWidget {
                                           .noteList[index]['description'],
                                       key: noteScreenController
                                           .noteList[index]['key'],
+                                          context: context,
                                     );
                                   },
                                   child: CircleAvatar(
@@ -265,7 +266,7 @@ class NoteScreen extends StatelessWidget {
           width: 100,
           child: FloatingActionButton(
             onPressed: () {
-              addNotes();
+              addNotes(context: context);
             },
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
@@ -282,7 +283,7 @@ class NoteScreen extends StatelessWidget {
     );
   }
 
-  addNotes({String title = "", String description = "", int key = 0, String createdAt = ""}) {
+  addNotes({String title = "", String description = "", int key = 0, String createdAt = "",BuildContext? context}) {
     if (title.isNotEmpty || description.isNotEmpty) {
       noteScreenController.titleController.text = title;
       noteScreenController.descriptionController.text = description;
@@ -314,7 +315,7 @@ class NoteScreen extends StatelessWidget {
 
                     cursorColor: Colors.black,
 
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.text,
                     controller: noteScreenController.titleController,
                     decoration: InputDecoration(
@@ -360,16 +361,18 @@ class NoteScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
-                    maxLines: 3,
-
+                    maxLines: 4,
                     cursorColor: Colors.black,
                     controller: noteScreenController.descriptionController,
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.text,
-
+                    textInputAction: TextInputAction.newline,
+                    keyboardType: TextInputType.multiline,
+                      onTapOutside: (event) {
+                      FocusScope.of(context!).unfocus();
+                      },
                     decoration: InputDecoration(
+                      
                       counterText: "",
-                      hintText: " Enter Decscription",
+                      hintText: " Enter Description",
                       filled: false,
                       hintStyle: const TextStyle(
                         color: Colors.black,
