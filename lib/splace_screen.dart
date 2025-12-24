@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter/services.dart';
+import 'package:get/get_connect/sockets/src/socket_notifier.dart';
+import 'package:learn_hive/customsnack_baar.dart';
 import 'note_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,8 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 4), () {
-      Get.offAll(NoteScreen()); // adjust route
+    Timer(const Duration(seconds: 4), () async {
+      bool success = await NativeAuth.authenticate();
+      if (success) {
+        Get.offAll(NoteScreen());
+      }
     });
   }
 
@@ -32,5 +37,20 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+}
+
+class NativeAuth {
+  static const _channel = MethodChannel('native_auth');
+
+  static Future<bool> authenticate() async {
+    try {
+      final bool result = await _channel.invokeMethod('authenticate');
+      debugPrint("Auth result: $result");
+      return result;
+    } on PlatformException catch (e) {
+      debugPrint("Auth error: ${e.code} - ${e.message}");
+      return false;
+    }
   }
 }
