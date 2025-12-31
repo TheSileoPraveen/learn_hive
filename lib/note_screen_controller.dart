@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:math' hide log;
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -36,7 +35,7 @@ class NoteScreenController extends GetxController {
         "created_at": myBox.get(key)["created_at"],
       };
     }).toList();
-  log("Note List Data: $noteList");
+    log("Note List Data: $noteList");
   }
 
   deleteNote(int key) async {
@@ -48,7 +47,13 @@ class NoteScreenController extends GetxController {
   }
 
   updateNote(int key, String title, String description) async {
-    await myBox.put(key, {"title": title, "description": description,"created_at":noteList.firstWhere((element) => element['key'] == key)['created_at']});
+    await myBox.put(key, {
+      "title": title,
+      "description": description,
+      "created_at": noteList.firstWhere(
+        (element) => element['key'] == key,
+      )['created_at'],
+    });
     CustomSnackBar("Note Edited Successfully", "S");
     getNoteListData();
     titleController.clear();

@@ -9,6 +9,8 @@ import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.Executor
 import android.os.Handler
 import android.os.Looper
+import android.os.Build
+
 
 class MainActivity : FlutterFragmentActivity() {
 
@@ -31,6 +33,21 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun authenticate(result: MethodChannel.Result) {
 
+    if (Build.MANUFACTURER.equals("oneplus", ignoreCase = true)) {
+        if (!replied) {
+            replied = true
+            result.success(true)
+        }
+        return
+    }
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (!replied) {
+            replied = true
+            result.success(true)
+        }
+        return
+    }
         val biometricManager = BiometricManager.from(this)
         if (biometricManager.canAuthenticate() != BiometricManager.BIOMETRIC_SUCCESS) {
             if (!replied) {
@@ -60,7 +77,7 @@ class MainActivity : FlutterFragmentActivity() {
                     errorCode: Int,
                     errString: CharSequence
                 ) {
-                    // User pressed Cancel or system error → close app
+                 
                     if (!replied) {
                         replied = true
                         result.success(false)
@@ -69,7 +86,7 @@ class MainActivity : FlutterFragmentActivity() {
                 }
 
                 override fun onAuthenticationFailed() {
-                    // ignore, wait for success or cancel
+                  
                 }
             }
         )
@@ -85,7 +102,7 @@ class MainActivity : FlutterFragmentActivity() {
 
     private fun closeApp() {
         Handler(Looper.getMainLooper()).post {
-            finishAffinity() // closes all activities
+            finishAffinity() 
         }
     }
 }
