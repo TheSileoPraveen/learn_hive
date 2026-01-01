@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:learn_hive/customsnack_baar.dart';
 import 'package:learn_hive/note_description_screen.dart';
 import 'package:learn_hive/note_screen_controller.dart';
 import 'package:intl/intl.dart';
@@ -36,231 +37,7 @@ class NoteScreen extends StatelessWidget {
         ),
         body: noteScreenController.noteList.isEmpty
             ? Center(child: Text("Please add some note to show your notes"))
-            : GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Number of columns
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 2 / 2, // Width to height ratio
-                ),
-                padding: const EdgeInsets.only(top: 26, left: 20, right: 20),
-                itemCount: noteScreenController.noteList.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Get.to(
-                        NoteDescriptionScreen(),
-                        arguments: {
-                          'title':
-                              '${noteScreenController.noteList[index]['title']}',
-                          'description':
-                              '${noteScreenController.noteList[index]['description']}',
-                              "created_at":
-                              '${noteScreenController.noteList[index]['created_at']}',
-                          'key': noteScreenController.noteList[index]['key'],
-                        },
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              noteScreenController.noteList[index]['title'],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Flexible(
-                              child: Text(
-                                noteScreenController
-                                    .noteList[index]['description'],
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              spacing: 40,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    addNotes(
-                                      title: noteScreenController
-                                          .noteList[index]['title'],
-                                      description: noteScreenController
-                                          .noteList[index]['description'],
-                                      key: noteScreenController
-                                          .noteList[index]['key'],
-                                          context: context,
-                                    );
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: Colors.black,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Get.defaultDialog(
-                                      title: "Title",
-                                      titlePadding: const EdgeInsets.only(
-                                        top: 20,
-                                        left: 20,
-                                        right: 20,
-                                      ),
-                                      titleStyle: const TextStyle(
-                                        fontSize: 20,
-
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 20,
-                                        right: 20,
-                                        top: 18,
-                                        bottom: 30,
-                                      ),
-                                      content: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: 12,
-                                          right: 12,
-                                          bottom: 10,
-                                        ),
-                                        child: Text(
-                                          'Are you sure you want to delete this note?',
-                                          textAlign: TextAlign.center,
-
-                                          style: TextStyle(
-                                            fontSize: 14,
-
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                      radius: 15,
-                                      actions: [
-                                        SizedBox(
-                                          width: 100,
-                                          child: OutlinedButton(
-                                            onPressed: () {
-                                              Get.back();
-                                            },
-                                            style: OutlinedButton.styleFrom(
-                                              side: BorderSide(
-                                                color: Colors.grey.shade400,
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    vertical: 12,
-                                                  ),
-                                            ),
-                                            child: Text(
-                                              "cancel",
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ), // space between buttons
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.green,
-                                          ),
-                                          onPressed: () {
-                                            noteScreenController.deleteNote(
-                                              noteScreenController
-                                                  .noteList[index]['key'],
-                                            );
-
-                                            Get.back();
-                                          },
-                                          child: Text(
-                                            'Delete',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.redAccent,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Created At :",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  DateFormat('dd MMM, EEE, yyyy').format(
-                                    DateTime.parse(
-                                      noteScreenController
-                                          .noteList[index]['created_at']??"",
-                                    ),
-                                  ),
-                                
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+            : cart(),
 
         floatingActionButton: SizedBox(
           width: 100,
@@ -283,7 +60,214 @@ class NoteScreen extends StatelessWidget {
     );
   }
 
-  addNotes({String title = "", String description = "", int key = 0, String createdAt = "",BuildContext? context}) {
+  cart() {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Number of columns
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 2 / 2, // Width to height ratio
+      ),
+      padding: const EdgeInsets.only(top: 26, left: 20, right: 20),
+      itemCount: noteScreenController.noteList.length,
+      itemBuilder: (context, index) {
+        return InkWell(
+          onTap: () {
+            Get.to(
+              NoteDescriptionScreen(),
+              arguments: {
+                'title': '${noteScreenController.noteList[index]['title']}',
+                'description':
+                    '${noteScreenController.noteList[index]['description']}',
+                "created_at":
+                    '${noteScreenController.noteList[index]['created_at']}',
+                'key': noteScreenController.noteList[index]['key'],
+              },
+            );
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    noteScreenController.noteList[index]['title'],
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Flexible(
+                    child: Text(
+                      noteScreenController.noteList[index]['description'],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 40,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          addNotes(
+                            title:
+                                noteScreenController.noteList[index]['title'],
+                            description: noteScreenController
+                                .noteList[index]['description'],
+                            key: noteScreenController.noteList[index]['key'],
+                            context: context,
+                          );
+                        },
+                        child: CircleAvatar(
+                          radius: 14,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.black,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          dailogbox(index);
+                        },
+                        child: CircleAvatar(
+                          radius: 14,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.redAccent,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          "Created At :",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        DateFormat('dd MMM, EEE, yyyy').format(
+                          DateTime.parse(
+                            noteScreenController
+                                    .noteList[index]['created_at'] ??
+                                "",
+                          ),
+                        ),
+
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> dailogbox(int index) {
+    return Get.defaultDialog(
+      title: "Title",
+      titlePadding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+      titleStyle: const TextStyle(
+        fontSize: 20,
+
+        color: Colors.green,
+        fontWeight: FontWeight.bold,
+      ),
+      contentPadding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 18,
+        bottom: 30,
+      ),
+      content: Padding(
+        padding: EdgeInsets.only(left: 12, right: 12, bottom: 10),
+        child: Text(
+          'Are you sure you want to delete this note?',
+          textAlign: TextAlign.center,
+
+          style: TextStyle(fontSize: 14, color: Colors.black),
+        ),
+      ),
+      radius: 15,
+      actions: [
+        SizedBox(
+          width: 100,
+          child: OutlinedButton(
+            onPressed: () {
+              Get.back();
+            },
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: Colors.grey.shade400),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+            child: Text(
+              "cancel",
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8), // space between buttons
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+          onPressed: () {
+            noteScreenController.deleteNote(
+              noteScreenController.noteList[index]['key'],
+            );
+
+            Get.back();
+          },
+          child: Text(
+            'Delete',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  addNotes({
+    String title = "",
+    String description = "",
+    int key = 0,
+    String createdAt = "",
+    BuildContext? context,
+  }) {
     if (title.isNotEmpty || description.isNotEmpty) {
       noteScreenController.titleController.text = title;
       noteScreenController.descriptionController.text = description;
@@ -366,11 +350,10 @@ class NoteScreen extends StatelessWidget {
                     controller: noteScreenController.descriptionController,
                     textInputAction: TextInputAction.newline,
                     keyboardType: TextInputType.multiline,
-                      onTapOutside: (event) {
+                    onTapOutside: (event) {
                       FocusScope.of(context!).unfocus();
-                      },
+                    },
                     decoration: InputDecoration(
-                      
                       counterText: "",
                       hintText: " Enter Description",
                       filled: false,
@@ -419,19 +402,26 @@ class NoteScreen extends StatelessWidget {
                         key,
                         noteScreenController.titleController.text,
                         noteScreenController.descriptionController.text,
-                        
                       );
+                      Get.back();
                     } else {
-                      noteScreenController.addData({
-                        'title': noteScreenController.titleController.text,
-                        'description':
-                            noteScreenController.descriptionController.text,
-                        "created_at": DateTime.now().toString(),
-                      });
+                      if (noteScreenController.titleController.text
+                              .trim()
+                              .isNotEmpty &&
+                          noteScreenController.descriptionController.text
+                              .trim()
+                              .isNotEmpty) {
+                        noteScreenController.addData({
+                          "title": noteScreenController.titleController.text,
+                          "description":
+                              noteScreenController.descriptionController.text,
+                          "created_at": DateTime.now().toString(),
+                        });
+                        Get.back();
+                      } else {
+                        CustomSnackBar("All field are required", "W");
+                      }
                     }
-
-                    // Close the bottom sheet after adding the note
-                    Get.back();
                   },
                   child: Text(
                     (title.isNotEmpty || description.isNotEmpty)
